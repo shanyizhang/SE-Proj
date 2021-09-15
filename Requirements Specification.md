@@ -1,4 +1,4 @@
-## Requirements Specification
+# Requirements Specification
 
 Sep.15th, 2021 | CSCI-GA-2440-001 Software Engineering
 
