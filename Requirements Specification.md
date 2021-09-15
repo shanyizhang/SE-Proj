@@ -14,7 +14,7 @@ Qingyang Li | ?@nyu.edu
 
 ### 2. Introduction
 
-The goal of this course project is to build a Python-based **Tetris** game. This document describes the requirements of this program. 
+The goal of this course project is to build a Python-based **Tetris** game. This game provides features that follow the widely-accepted rules. This document describes the requirements of this program. 
 
 
 
@@ -22,9 +22,23 @@ The goal of this course project is to build a Python-based **Tetris** game. This
 
 **UC1** Game Setup
 
+**UC2** View Leader Board
+
+UC3 Move Downward
+
+UC4 Horizontal Shift
+
+UC5 Rotation
+
+UC6 View State
 
 
-### UC1 Login
+
+
+
+
+
+### UC1 Game Setup
 
 **1.1 Preconditions:**
 None.
