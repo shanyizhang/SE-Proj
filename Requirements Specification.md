@@ -91,9 +91,9 @@ The game space is basically a rectangle with internal grids. There is a Tetrimin
 
 **1.3 Sub Flows:**
 
-[S1] The player can either shift the Tetrimino horizontally [UC4] or rotate the Tetrimino [UC5]. 
+[S1] The player can either shift the Tetrimino horizontally [UC4] or rotate the Tetrimino [UC5] by refering to [UC6]. 
 
-[S2] After the Tetrimino move one step downward, based on the position of the Tetrimino, the game state may change to [UC7]. Otherwise, this action will keep going on.
+[S2] After the Tetrimino move one step downward, based on the position of the Tetrimino, the game state may change to [UC7]. 
 
 **1.4 Alternative Flows：**
 
@@ -108,7 +108,7 @@ The Tetrimino has moved one step downward.
 
 **1.2 Main Flow:**
 
-If the bottom boundary of the Tetrimino touches any non-empty cells, this Tetrimino is said to hit the ground. Then the program will detect if there is any complete row (i.e. row with no empty cells). Rows that satisfy this criterion will be erased all at once and thus the whole game space will be shifted downward to compensate for loss of rows. [E1]
+If the bottom boundary of the Tetrimino touches any non-empty cells, this Tetrimino is said to hit the ground. Then the program will detect if there is any complete row (i.e. row with no empty cells). Rows that satisfy this criterion will be erased all at once and thus the whole game space will be shifted downward to compensate for loss of rows. [E1] Finally, a new Tetrimino will appear at the top of the game space.
 
 **1.3 Sub Flows:**
 
