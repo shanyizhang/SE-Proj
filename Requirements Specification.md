@@ -141,7 +141,7 @@ The player may rotate the current Tetromino clockwise or counter-clockwise by 90
 
 
 
-### UC6 View Next Tetromino
+### UC6 View Current State
 
 **6.1 Preconditions:**
 
@@ -149,7 +149,7 @@ The current Tetromino is moving downward.
 
 **6.2 Main Flow:**
 
-While the current Tetromino is moving downward [UC3], the appearance of the next Tetromino generated \[S1\] will be displayed somewhere outside the game space.
+While the current Tetromino is moving downward \[UC3\], the player may check current state of the game (e.g. current timestamp, shape of next tetromino \[S1\]) and decide if further actions \[UC4, UC5\]  need to be taken.
 
 **6.3 Sub Flows:**
 
