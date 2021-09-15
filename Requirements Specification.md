@@ -63,18 +63,18 @@ None.
 
 ### UC2 View Leaderboard
 
-**1.1 Preconditions:**
+**2.1 Preconditions:**
 The player has failed and is out of the game.
 
-**1.2 Main Flow:**
+**2.2 Main Flow:**
 
 Right after the player finishs one round of game, the View Leaderboard dialog will show to prompt the player view his/her score and the historical top-10 scores for this game [E1].
 
-**1.3 Sub Flows:**
+**2.3 Sub Flows:**
 
 None.
 
-**1.4 Alternative Flows：**
+**2.4 Alternative Flows：**
 
 [E1] If the Quit button is pressed, the whole program will close.
 
@@ -82,20 +82,20 @@ None.
 
 ### UC3 Move Downward
 
-**1.1 Preconditions:**
+**3.1 Preconditions:**
 The player has successfully set up the game and entered the main game interface.
 
-**1.2 Main Flow:**
+**3.2 Main Flow:**
 
 The game space is basically a rectangle with internal grids. There is a Tetrimino on the fly. The game is clock-based. Everytime the clock ticks, the Tetrimino will move one step downward. The player has no control of this action. The player can perform [S1] between two consecutive clock ticks.  This action will keep going on unless [S2]. 
 
-**1.3 Sub Flows:**
+**3.3 Sub Flows:**
 
 [S1] The player can either shift the Tetrimino horizontally [UC4] or rotate the Tetrimino [UC5] by refering to [UC6]. 
 
 [S2] After the Tetrimino move one step downward, based on the position of the Tetrimino, the game state may change to [UC7]. 
 
-**1.4 Alternative Flows：**
+**3.4 Alternative Flows：**
 
 None.
 
@@ -103,18 +103,18 @@ None.
 
 ### UC7 Hit the Ground
 
-**1.1 Preconditions:**
+**7.1 Preconditions:**
 The Tetrimino has moved one step downward.
 
-**1.2 Main Flow:**
+**7.2 Main Flow:**
 
 If the bottom boundary of the Tetrimino touches any non-empty cells, this Tetrimino is said to hit the ground. Then the program will detect if there is any complete row (i.e. row with no empty cells). Rows that satisfy this criterion will be erased all at once and thus the whole game space will be shifted downward to compensate for loss of rows. [E1] Finally, a new Tetrimino will appear at the top of the game space.
 
-**1.3 Sub Flows:**
+**7.3 Sub Flows:**
 
 None.
 
-**1.4 Alternative Flows：**
+**7.4 Alternative Flows：**
 
 [E1] If there is still any non-empty cell in the top row, the player fails the game. Subsequently, the player's score will be recorded and [UC2] will show up.
 
