@@ -41,6 +41,7 @@ The goal of this course project is to build a Python-based **Tetris** game. This
 ### UC1 Set Up Game 
 
 **1.1 Preconditions:**
+
 None.
 
 **1.2 Main Flow:**
@@ -64,6 +65,7 @@ None.
 ### UC2 View Leaderboard
 
 **2.1 Preconditions:**
+
 The player has failed and is out of the game.
 
 **2.2 Main Flow:**
@@ -83,6 +85,7 @@ None.
 ### UC3 Move Downward
 
 **3.1 Preconditions:**
+
 The player has successfully set up the game and entered the main game interface.
 
 **3.2 Main Flow:**
