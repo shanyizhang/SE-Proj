@@ -68,7 +68,7 @@ The player has failed and is out of the game.
 
 **2.2 Main Flow:**
 
-Right after the player finishs the game, the View Leaderboard dialog will show to prompt the player view his/her score and the historical top-10 scores for this game [E1].
+Right after the player finishes the game, the View Leaderboard dialog will show to prompt the player view his/her score and the historical top-10 scores for this game [E1].
 
 **2.3 Sub Flows:**
 
@@ -87,11 +87,11 @@ The player has successfully set up the game and entered the main game interface.
 
 **3.2 Main Flow:**
 
-The game space is basically a rectangle with internal grids. There is a Tetrimino on the fly. The game is clock-based. Everytime the clock ticks, the Tetrimino will move one step downward no matter what. The player has no control of this action. The player can perform [S1] between two consecutive clock ticks.  This action will keep going on unless [S2]. 
+The game space is basically a rectangle with internal grids. There is a Tetrimino on the fly. The game is clock-based. Every time the clock ticks, the Tetrimino will move one step downward no matter what. The player has no control of this action. The player can perform [S1] between two consecutive clock ticks.  This action will keep going on unless [S2]. 
 
 **3.3 Sub Flows:**
 
-[S1] The player can either shift the Tetrimino horizontally [UC4] or rotate the Tetrimino [UC5] by refering to the current game space and [UC6]. 
+[S1] The player can either shift the Tetrimino horizontally [UC4] or rotate the Tetrimino [UC5] by referring to the current game space and [UC6]. 
 
 [S2] After the Tetrimino move one step downward, based on the position of the Tetrimino, the game state may change to [UC7]. 
 
@@ -168,7 +168,7 @@ The Tetrimino has moved one step downward.
 
 **7.2 Main Flow:**
 
-If the bottom boundary of the Tetrimino touches any non-empty cells, this Tetrimino is said to hit the ground. Then the program will detect if there is any complete row (i.e. row with no empty cells). Rows that satisfy this criterion will be erased all at once. Thus, the whole game space will be shifted downward and filled with emtpy rows to compensate for loss of rows. [E1] Finally, a new Tetrimino will appear at the top of the game space.
+If the bottom boundary of the Tetrimino touches any non-empty cells, this Tetrimino is said to hit the ground. Then the program will detect if there is any complete row (i.e. row with no empty cells). Rows that satisfy this criterion will be erased all at once. Thus, the whole game space will be shifted downward and filled with empty rows to compensate for loss of rows. [E1] Finally, a new Tetrimino will appear at the top of the game space.
 
 **7.3 Sub Flows:**
 
@@ -180,3 +180,44 @@ None.
 
 
 
+### 4. Nonfunctional Requirements
+
+#### NR1. Performance
+
+The program should accept the player's inputs during the game, but execute only the valid operations given a player's input to the system. All functions shall be completed quickly.
+
+**NR1.1 User Response**
+
+The program shall respond to any user input within 0.01 seconds.
+
+
+
+#### NR2. Usability
+
+A player should be able to determine quickly what type of operations they can/have to perform.
+
+**NR2.1 Player options**
+
+A player shall only have access to functionality that is allowed at a given time.
+
+**NR2.2 User Interface**
+
+The program shall allow a player to interface with it through keyboard and mouse. During the game,  all operations can be achieved using 4 Arrow buttons of the keyboard. The amount of mouse input shall be minimized by the system to include only entering level of difficulty and player name. 
+
+**NR2.3. User Errors**
+
+The program shall catch invalid input from all text fields in the system.
+
+
+
+### 5. Constraints
+
+The program should be written in Python3. 
+
+
+
+### 6.Development and Target Platforms
+
+- Windows 10 & MacOS 
+- Intel x86 Micro-processors
+- Visual Studio Code
