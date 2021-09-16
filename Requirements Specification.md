@@ -167,6 +167,7 @@ None.
 ### UC7 Hit the Ground
 
 **7.1 Preconditions:**
+
 The Tetrimino has moved one step downward.
 
 **7.2 Main Flow:**
@@ -219,7 +220,7 @@ The program should be written in Python3.
 
 
 
-### 6.Development and Target Platforms
+### 6. Development and Target Platforms
 
 - Windows 10 & MacOS 
 - Intel x86 Micro-processors
