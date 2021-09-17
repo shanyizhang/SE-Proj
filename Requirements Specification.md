@@ -36,6 +36,8 @@ The goal of this course project is to build a Python-based **Tetris** game. This
 
 ![Use Case Diagram](/Users/kenzhang/Desktop/SE/Proj/SE-Proj/Use Case Diagram.png)
 
+
+
 ### UC1 Set Up Game 
 
 **1.1 Preconditions:**
@@ -184,7 +186,7 @@ A player shall only have access to functionality that is allowed at a given time
 
 **NR2.2 User Interface**
 
-The program shall allow a player to interface with it through keyboard and mouse. During the game,  all operations can be achieved using 4 Arrow buttons of the keyboard. The amount of mouse input shall be minimized by the system to include only entering level of difficulty and player name. 
+The program shall allow a player to interact with it through keyboard and mouse. During the game,  all operations can be achieved using 4 Arrow buttons of the keyboard. The amount of mouse input shall be minimized by the system to include only entering level of difficulty and player name. 
 
 **NR2.3. User Errors**
 
