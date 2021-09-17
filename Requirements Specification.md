@@ -36,7 +36,7 @@ The goal of this course project is to build a Python-based **Tetris** game. This
 
 
 
-
+![Use Case Diagram](/Users/kenzhang/Desktop/SE/Proj/SE-Proj/Use Case Diagram.png)
 
 ### UC1 Set Up Game 
 
