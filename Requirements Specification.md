@@ -1,6 +1,6 @@
 # Tetris Requirements Specification
 
-Sep.15th, 2021 | CSCI-GA-2440-001 Software Engineering
+Oct.6th, 2021 | CSCI-GA-2440-001 Software Engineering
 
 
 
@@ -18,7 +18,27 @@ The goal of this course project is to build a Python-based **Tetris** game. This
 
 
 
-### 3. Use Cases
+### 3. Diagrams
+
+#### **Use Case Diagrams**
+
+![Use Case Diagram](/Users/kenzhang/Desktop/SE/Proj/SE-Proj/Use Case Diagram.png)
+
+#### **Class Diagrams**
+
+![Class Diagram](/Users/kenzhang/Desktop/SE/Proj/SE-Proj/Class Diagram.png)
+
+#### Sequence Diagrams
+
+1. **GamePlay**
+
+![Seq_ PlayGame](/Users/kenzhang/Desktop/SE/Proj/SE-Proj/Seq_ PlayGame.png)
+
+2. **Shift the Tetromino**
+
+![Seq_ Shift](/Users/kenzhang/Desktop/SE/Proj/SE-Proj/Seq_ Shift.png)
+
+### 4. Use Cases
 
 **UC1** Set Up Game 
 
@@ -31,10 +51,6 @@ The goal of this course project is to build a Python-based **Tetris** game. This
 **UC5** Rotate
 
 **UC6** View Next Tetromino
-
-
-
-![Use Case Diagram](/Users/kenzhang/Desktop/SE/Proj/SE-Proj/Use Case Diagram.png)
 
 
 
@@ -164,7 +180,7 @@ None.
 
 
 
-### 4. Nonfunctional Requirements
+### 5. Nonfunctional Requirements
 
 #### NR1. Performance
 
@@ -194,13 +210,13 @@ The program shall catch invalid input from all text fields in the system.
 
 
 
-### 5. Constraints
+### 6. Constraints
 
 The program should be written in Python3. 
 
 
 
-### 6. Development and Target Platforms
+### 7. Development and Target Platforms
 
 - Windows 10 & MacOS 
 - Intel x86 Micro-processors
