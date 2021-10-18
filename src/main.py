@@ -6,9 +6,16 @@
 
 
 from gameboard import Gameboard
+from tetro import *
 from config import *
 from utils import *
 import pygame
+
+
+def main(window):
+    TP = TetrominoProxy(column=column)
+    G = Gameboard(column=column, row=row, tetro_proxy=TP)
+    G.play(window)
 
 
 if __name__ == '__main__':
@@ -28,6 +35,6 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                G = Gameboard(column=column, row=row)
+                main(window)
 
     pygame.quit()
