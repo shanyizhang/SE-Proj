@@ -35,7 +35,7 @@ class Gameboard(object):
                     return False
         return True
 
-    def clear_rows(self, grid, locked):
+    def eliminate_row(self, grid, locked):
         inc = 0
         for i in range(len(grid)-1,-1,-1):
             row = grid[i]
@@ -54,7 +54,7 @@ class Gameboard(object):
                     newKey = (x, y + inc)
                     locked[newKey] = locked.pop(key)
                     
-    def check_lost(self, occupied):
+    def fail(self, occupied):
         for pos in occupied:
             x, y = pos
             if y < 1:
@@ -63,7 +63,7 @@ class Gameboard(object):
         
     def play(self, window):
 
-        change_piece = False
+        change_tetro = False
         fall_time = 0
         fall_speed = 0.27
         score = 0
@@ -85,7 +85,7 @@ class Gameboard(object):
                 curr_tetro.y += 1
                 if not (self.valid_space(curr_tetro, grid)) and curr_tetro.y > 0:
                     curr_tetro.y -= 1
-                    change_piece = True
+                    change_tetro = True
             
             shape_pos = self.tetro_proxy.convert_shape_format(curr_tetro)
             for i in range(len(shape_pos)):
@@ -93,20 +93,20 @@ class Gameboard(object):
                 if y > -1:
                     grid[y][x] = curr_tetro.color
 
-            if change_piece:
+            if change_tetro:
                 for pos in shape_pos:
                     p = (pos[0], pos[1])
                     occupied_positions[p] = curr_tetro.color
                 curr_tetro = self.tetro_proxy.dump_next()
-                change_piece = False
-                if self.clear_rows(grid, occupied_positions):
+                change_tetro = False
+                if self.eliminate_row(grid, occupied_positions):
                     score += 10
 
             draw_window(grid, window)
             draw_next_shape(self.tetro_proxy.view_next(), window)
             pygame.display.update()
 
-            if self.check_lost(occupied_positions):
+            if self.fail(occupied_positions):
                 run = False
 
         draw_text_middle("You Lose", 40, (255,255,255), window)
