@@ -5,24 +5,32 @@
 ## ----------------------------------------
 
 
-row = 20
 
-column = 10
+ROW = 20
 
-window_width = 800
 
-window_height = 700
+COLUMN = 10
 
-board_width = 300
 
-board_height = 600
+WINDOW_WIDTH = 800
 
-block_size = 30
 
-top_left_x = (window_width - board_width) // 2
+WINDOW_HEIGHT = 700
 
-top_left_y = window_height - board_height
 
+BOARD_WIDTH = 300
+
+
+BOARD_HEIGHT = 600
+
+
+BLOCK_SIZE = 30
+
+
+TOP_LEFT_X = (WINDOW_WIDTH - BOARD_WIDTH) // 2
+
+
+TOP_LEFT_Y = WINDOW_HEIGHT - BOARD_HEIGHT
 
 
 

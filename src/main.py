@@ -13,8 +13,8 @@ import pygame
 
 
 def main(window):
-    TP = TetrominoProxy(column=column)
-    G = Gameboard(column=column, row=row, tetro_proxy=TP)
+    TP = TetrominoProxy(column=COLUMN)
+    G = Gameboard(column=COLUMN, row=ROW, tetro_proxy=TP)
     G.play(window)
 
 
@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     pygame.font.init()
 
-    window = pygame.display.set_mode((window_width, window_height))
+    window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption('Tetris Game')
 
     run = True
