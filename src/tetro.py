@@ -6,6 +6,7 @@
 
 
 import random
+from enum import Enum
 
 
 S = [['.....',
@@ -115,6 +116,11 @@ SHAPES = [S, Z, I, O, J, L, T]
 COLORS = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
 
 
+class TetroState(Enum):
+    Alive = "Alive"
+    Dead = "Dead"
+
+
 class Tetromino(object):
     def __init__(self, x: int, y: int, t_index: int):
         self.x = x
@@ -122,6 +128,19 @@ class Tetromino(object):
         self.shape = SHAPES[t_index]
         self.color = COLORS[t_index]
         self.rotation = 0
+        self.state = TetroState.Alive
+
+    def down(self):
+        self.y += 1
+    
+    def up(self):
+        self.y -= 1
+
+    def die(self):
+        self.state = TetroState.Dead
+    
+    def check_die(self):
+        return self.state == TetroState.Dead
 
 
 class TetrominoProxy(object):
