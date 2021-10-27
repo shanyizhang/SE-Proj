@@ -136,6 +136,12 @@ class Tetromino(object):
     def up(self):
         self.y -= 1
 
+    def left(self):
+        self.x -= 1
+
+    def right(self):
+        self.x += 1
+
     def die(self):
         self.state = TetroState.Dead
     

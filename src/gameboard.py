@@ -17,7 +17,7 @@ class Gameboard(object):
         self.tetro_proxy : TetrominoProxy = tetro_proxy
         self.clock = pygame.time.Clock()
         
-        self.fall_speed = 0.1
+        self.fall_speed = 0.3
 
         self.grid = None
         self.occupied_positions = None
@@ -94,14 +94,14 @@ class Gameboard(object):
             return  # illegal event
         if kevent.key == pygame.K_LEFT:
             # shift left
-            self.curr_tetro.x -= 1
+            self.curr_tetro.left()
             if not self.valid_space():
-                self.curr_tetro.x += 1
+                self.curr_tetro.right()
         elif kevent.key == pygame.K_RIGHT:
             # shift right
-            self.curr_tetro.x += 1
+            self.curr_tetro.right()
             if not self.valid_space():
-                self.curr_tetro.x -= 1
+                self.curr_tetro.left()
         elif kevent.key == pygame.K_UP:
             pass  # rotate
         elif kevent.key == pygame.K_DOWN:
