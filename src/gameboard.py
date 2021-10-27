@@ -86,6 +86,27 @@ class Gameboard(object):
         self.fall_time = 0
         self.score = 0
 
+    def handle(self, kevent):
+        """ a function to handle keyboard event
+        
+        kevent: a PyGame event object"""
+        if kevent.type != pygame.KEYDOWN:
+            return  # illegal event
+        if kevent.key == pygame.K_LEFT:
+            # shift left
+            self.curr_tetro.x -= 1
+            if not self.valid_space():
+                self.curr_tetro.x += 1
+        elif kevent.key == pygame.K_RIGHT:
+            # shift right
+            self.curr_tetro.x += 1
+            if not self.valid_space():
+                self.curr_tetro.x -= 1
+        elif kevent.key == pygame.K_UP:
+            pass  # rotate
+        elif kevent.key == pygame.K_DOWN:
+            pass  # move down
+
     def play(self, window):
         
         self.reset()
@@ -99,6 +120,16 @@ class Gameboard(object):
 
             self.move_downwards()
             
+            # User Control Part:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    # close the window & quit the program
+                    run = False
+                    pygame.display.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    self.handle(event)
+
             shape_pos = self.tetro_proxy.convert_shape_format(self.curr_tetro)
             for i in range(len(shape_pos)):
                 x, y = shape_pos[i]
