@@ -87,11 +87,13 @@ class Gameboard(object):
         self.score = 0
 
     def handle(self, kevent):
-        """ a function to handle keyboard event
-        
-        kevent: a PyGame event object"""
+        """ 
+        a function to handle keyboard event
+        kevent: a PyGame event object
+        """
         if kevent.type != pygame.KEYDOWN:
-            return  # illegal event
+            # illegal event
+            return 
         if kevent.key == pygame.K_LEFT:
             # shift left
             self.curr_tetro.left()
@@ -103,9 +105,15 @@ class Gameboard(object):
             if not self.valid_space():
                 self.curr_tetro.left()
         elif kevent.key == pygame.K_UP:
-            pass  # rotate
+            # rotate
+            self.curr_tetro.rotate_clockwise()
+            if not self.valid_space():
+                self.curr_tetro.rotate_counterclockwise()
         elif kevent.key == pygame.K_DOWN:
-            pass  # move down
+            # move down
+            self.curr_tetro.down()
+            if not self.valid_space():
+                self.curr_tetro.up()
 
     def play(self, window):
         

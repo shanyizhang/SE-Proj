@@ -142,6 +142,12 @@ class Tetromino(object):
     def right(self):
         self.x += 1
 
+    def rotate_clockwise(self):
+        self.rotation = (self.rotation + 1) % len(self.shape)
+
+    def rotate_counterclockwise(self):
+        self.rotation = (self.rotation - 1) % len(self.shape)
+
     def die(self):
         self.state = TetroState.Dead
     
