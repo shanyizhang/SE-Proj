@@ -22,7 +22,8 @@ if __name__ == '__main__':
 
     pygame.font.init()
 
-    window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT),
+        flags=0 if SHOW_WINDOW else pygame.HIDDEN)  # use the 'flags' argument to show or hide window
     pygame.display.set_caption('Tetris Game')
 
     run = True
