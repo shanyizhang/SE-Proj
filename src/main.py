@@ -1,41 +1,35 @@
 ## ----------------------------------------
 ##   Software Engineering @ NYU
 ##   Course Project - Tetris Game
-##   Ken S. Zhang & Qingyang Liu
+##   Ken S. Zhang & Qingyang Li
 ## ----------------------------------------
 
 
 from gameboard import Gameboard
 from tetro import *
 from config import *
-from utils import *
+from display import *
 import pygame
 
 
-def main(window):
+def main(interface: UserInterface):
     TP = TetrominoProxy(column=COLUMN)
-    G = Gameboard(column=COLUMN, row=ROW, tetro_proxy=TP)
-    G.play(window)
+    GB = Gameboard(column=COLUMN, row=ROW, tetro_proxy=TP)
+    GB.play(interface)
 
 
 if __name__ == '__main__':
 
-    pygame.font.init()
-
-    window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT),
-        flags=0 if SHOW_WINDOW else pygame.HIDDEN)  # use the 'flags' argument to show or hide window
-    pygame.display.set_caption('Tetris Game')
+    UI = UserInterface()
 
     run = True
     while run:
-        window.fill((0,0,0))
-        draw_text_middle('Press any key to begin.', 60, (255, 255, 255), window)
-        pygame.display.update()
-        
+
+        UI.start()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                main(window)
+                main(interface=UI)
 
     pygame.quit()

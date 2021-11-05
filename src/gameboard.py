@@ -1,13 +1,13 @@
 ## ----------------------------------------
 ##   Software Engineering @ NYU
 ##   Course Project - Tetris Game
-##   Ken S. Zhang & Qingyang Liu
+##   Ken S. Zhang & Qingyang Li
 ## ----------------------------------------
 
 
 import pygame
 from tetro import Tetromino, TetrominoProxy
-from utils import *
+from display import *
 
 
 class Gameboard(object):
@@ -65,7 +65,7 @@ class Gameboard(object):
                     
     def fail(self):
         for pos in self.occupied_positions:
-            x, y = pos
+            _, y = pos
             if y < 1:
                 return True
         return False
@@ -115,7 +115,7 @@ class Gameboard(object):
             if not self.valid_space():
                 self.curr_tetro.up()
 
-    def play(self, window):
+    def play(self, interface: UserInterface):
         
         self.reset()
 
@@ -133,7 +133,7 @@ class Gameboard(object):
                 if event.type == pygame.QUIT:
                     # close the window & quit the program
                     run = False
-                    pygame.display.quit()
+                    interface.shutdown()
                     quit()
                 if event.type == pygame.KEYDOWN:
                     self.handle(event)
@@ -152,13 +152,13 @@ class Gameboard(object):
                 if self.eliminate_row():
                     self.score += 10
 
-            draw_window(self.grid, window)
-            draw_next_shape(self.tetro_proxy.view_next(), window)
-            pygame.display.update()
+            interface.draw_window(self.grid)
+            interface.draw_next_shape(self.tetro_proxy.view_next())
+            interface.update()
 
             if self.fail():
                 run = False
 
-        draw_text_middle("You Lose. Score:{}".format(self.score), 40, (255,255,255), window)
-        pygame.display.update()
+        interface.draw_text_middle("You Lose. Score:{}".format(self.score), 40, (255,255,255))
+        interface.update()
         pygame.time.delay(2000)
