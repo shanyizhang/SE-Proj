@@ -10,9 +10,9 @@ import pygame
 
 
 class UserInterface(object):
-    def __init__(self):
+    def __init__(self, show_window=True):
         pygame.font.init()
-        self.window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), flags=0 if SHOW_WINDOW else pygame.HIDDEN)
+        self.window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), flags=0 if show_window else pygame.HIDDEN)
         pygame.display.set_caption('Tetris Game')
 
     def start(self):
