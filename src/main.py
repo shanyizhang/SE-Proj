@@ -23,13 +23,24 @@ if __name__ == '__main__':
     UI = UserInterface()
 
     run = True
+
+    IB = InputBox(window=UI.window)
+    
     while run:
 
         UI.start()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if event.type == pygame.KEYDOWN:
-                main(interface=UI)
+            IB.handle_event(event)
+
+        IB.update_display_text()
+        IB.draw_rect()
+
+        if IB.check_complete():
+            text = IB.dump_and_flush()
+            print(text)
+            main(interface=UI)
 
     pygame.quit()

@@ -17,7 +17,7 @@ class UserInterface(object):
 
     def start(self):
         self.window.fill((0,0,0))
-        self.draw_text_middle('Press any key to begin.', 60, (255, 255, 255))
+        self.draw_text_middle('Enter Username to Begin.', 60, (255, 255, 255))
         self.update()
     
     def update(self):
@@ -62,3 +62,42 @@ class UserInterface(object):
                 if column == '0':
                     pygame.draw.rect(self.window, shape.color, (sx + j * BLOCK_SIZE, sy + i * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE), 0)
         self.window.blit(label, (sx + 10, sy - BLOCK_SIZE))
+
+
+class InputBox(object):
+    def __init__(self, window):
+        self.window = window
+        self.rect = pygame.Rect(TOP_LEFT_X + BOARD_WIDTH/2, TOP_LEFT_Y + BOARD_HEIGHT/2 + 50, 140, 32)
+        self.color = (255, 255, 255)
+        self.text = ''
+        self.txt_surface = pygame.font.Font(None, 32).render(self.text, True, self.color)
+        self.complete = False
+
+    def handle_event(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                self.complete = True
+            elif event.key == pygame.K_BACKSPACE:
+                self.text = self.text[:-1]
+            else:
+                self.text += event.unicode
+            self.txt_surface = pygame.font.Font(None, 32).render(self.text, True, self.color)
+
+    def update_display_text(self):
+        width = max(200, self.txt_surface.get_width()+10)
+        self.rect.w = width
+        self.window.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
+        pygame.display.update()
+
+    def draw_rect(self):
+        pygame.draw.rect(self.window, self.color, self.rect, 2)
+        pygame.display.update()
+
+    def check_complete(self):
+        return self.complete == True
+
+    def dump_and_flush(self):
+        text_temp = self.text
+        self.text = ''
+        self.complete = False
+        return text_temp
