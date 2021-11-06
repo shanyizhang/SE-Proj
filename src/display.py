@@ -87,11 +87,9 @@ class InputBox(object):
         width = max(200, self.txt_surface.get_width()+10)
         self.rect.w = width
         self.window.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
-        pygame.display.update()
 
     def draw_rect(self):
         pygame.draw.rect(self.window, self.color, self.rect, 2)
-        pygame.display.update()
 
     def check_complete(self):
         return self.complete == True

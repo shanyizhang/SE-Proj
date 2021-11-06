@@ -37,6 +37,7 @@ if __name__ == '__main__':
 
         IB.update_display_text()
         IB.draw_rect()
+        UI.update()
 
         if IB.check_complete():
             text = IB.dump_and_flush()
