@@ -162,3 +162,5 @@ class Gameboard(object):
         interface.draw_text_middle("You Lose. Score:{}".format(self.score), 40, (255,255,255))
         interface.update()
         pygame.time.delay(2000)
+
+        return self.score
