@@ -5,6 +5,7 @@
 ## ----------------------------------------
 
 
+from database import Leaderboard
 from gameboard import Gameboard
 from tetro import *
 from config import *
@@ -15,21 +16,39 @@ import pygame
 def main(interface: UserInterface):
     TP = TetrominoProxy(column=COLUMN)
     GB = Gameboard(column=COLUMN, row=ROW, tetro_proxy=TP)
-    GB.play(interface)
+    score = GB.play(interface)
+    return score
 
 
 if __name__ == '__main__':
 
+    LB = Leaderboard()
+
     UI = UserInterface()
 
     run = True
+
+    IB = InputBox(window=UI.window)
+    
     while run:
 
         UI.start()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if event.type == pygame.KEYDOWN:
-                main(interface=UI)
+            IB.handle_event(event)
+
+        IB.update_display_text()
+        IB.draw_rect()
+        UI.update()
+
+        if IB.check_complete():
+            
+            name = IB.dump_and_flush()
+            score = main(interface=UI)
+
+            LB.ingest(name, score)
+            LB.show_all()
 
     pygame.quit()
