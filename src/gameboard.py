@@ -44,6 +44,23 @@ class Gameboard(object):
                     return False
         return True
 
+    @staticmethod
+    def compute_score(num_inc):
+        """
+        compute the score when rows are cleared
+        num_inc: number of rows being cleared (between 1 to 4)
+        """
+        if num_inc == 1:
+            return 10
+        elif num_inc == 2:
+            return 30
+        elif num_inc == 3:
+            return 60
+        elif num_inc == 4:
+            return 100
+        else:
+            raise ValueError(num_inc)
+
     def eliminate_row(self):
         inc = 0
         for i in range(len(self.grid)-1,-1,-1):
@@ -62,7 +79,8 @@ class Gameboard(object):
                 if y < ind:
                     newKey = (x, y + inc)
                     self.occupied_positions[newKey] = self.occupied_positions.pop(key)
-                    
+        return inc  # return number of rows eliminated
+
     def fail(self):
         for pos in self.occupied_positions:
             _, y = pos
@@ -149,8 +167,10 @@ class Gameboard(object):
                     p = (pos[0], pos[1])
                     self.occupied_positions[p] = self.curr_tetro.color
                 self.curr_tetro = self.tetro_proxy.dump_next()
-                if self.eliminate_row():
-                    self.score += 10
+                # update score when rows are eliminated:
+                cleared = self.eliminate_row()
+                if cleared > 0:
+                    self.score += self.compute_score(cleared)
 
             interface.draw_window(self.grid)
             interface.draw_next_shape(self.tetro_proxy.view_next())
