@@ -98,4 +98,5 @@ class InputBox(object):
         text_temp = self.text
         self.text = ''
         self.complete = False
+        self.txt_surface = pygame.font.Font(None, 32).render(self.text, True, self.color)
         return text_temp

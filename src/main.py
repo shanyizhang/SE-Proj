@@ -46,6 +46,7 @@ if __name__ == '__main__':
         if IB.check_complete():
             
             name = IB.dump_and_flush()
+            IB.update_display_text()  # dump InputBox display
             score = main(interface=UI)
 
             LB.ingest(name, score)
