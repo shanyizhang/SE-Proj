@@ -11,6 +11,7 @@ from tetro import *
 from config import *
 from display import *
 import pygame
+import time
 
 
 def main(interface: UserInterface):
@@ -28,8 +29,6 @@ if __name__ == '__main__':
 
     run = True
 
-    IB = InputBox(window=UI.window)
-    
     while run:
 
         UI.start()
@@ -37,16 +36,18 @@ if __name__ == '__main__':
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            IB.handle_event(event)
+            UI.inputbox.handle_event(event)
 
-        IB.update_display_text()
-        IB.draw_rect()
+        UI.inputbox.update_display_text()
+        UI.inputbox.draw_rect()
         UI.update()
 
-        if IB.check_complete():
+        time.sleep(0.15)
+
+        if UI.inputbox.check_complete():
             
-            name = IB.dump_and_flush()
-            IB.update_display_text()  # dump InputBox display
+            name = UI.inputbox.dump_and_flush()
+            UI.inputbox.update_display_text()  # dump InputBox display
             score = main(interface=UI)
 
             LB.ingest(name, score)
