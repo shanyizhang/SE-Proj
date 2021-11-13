@@ -14,12 +14,14 @@ class UserInterface(object):
         pygame.font.init()
         self.window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), flags=0 if show_window else pygame.HIDDEN)
         pygame.display.set_caption('Tetris Game')
+        self.inputbox = InputBox(window=self.window)
 
     def start(self):
         self.window.fill((0,0,0))
         self.draw_text_middle('Enter Username to Begin.', 60, (255, 255, 255))
+        self.inputbox.draw_rect()
         self.update()
-    
+
     def update(self):
         pygame.display.update()
 
@@ -81,14 +83,17 @@ class InputBox(object):
                 self.text = self.text[:-1]
             else:
                 self.text += event.unicode
-            self.txt_surface = pygame.font.Font(None, 32).render(self.text, True, self.color)
-
+            
     def update_display_text(self):
+        self.txt_surface = pygame.font.Font(None, 32).render(self.text, True, self.color)
         width = max(200, self.txt_surface.get_width()+10)
         self.rect.w = width
         self.window.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
 
     def draw_rect(self):
+        font = pygame.font.SysFont('comicsans', 40, bold=False)
+        label = font.render('Username:', 1, (255, 255, 255))
+        self.window.blit(label, (TOP_LEFT_X + BOARD_WIDTH/2 - 153, TOP_LEFT_Y + BOARD_HEIGHT/2 + 54))
         pygame.draw.rect(self.window, self.color, self.rect, 2)
 
     def check_complete(self):
@@ -96,7 +101,6 @@ class InputBox(object):
 
     def dump_and_flush(self):
         text_temp = self.text
-        self.text = ''
         self.complete = False
         self.txt_surface = pygame.font.Font(None, 32).render(self.text, True, self.color)
         return text_temp
