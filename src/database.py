@@ -22,7 +22,6 @@ class Leaderboard(object):
 
     def exist(self, name):
         rows = self.cursor.execute("SELECT name FROM leaderboard WHERE name = ?",(name,),).fetchall()
-        print(len(rows) > 0)
         return len(rows) > 0
 
     def show_all(self):
