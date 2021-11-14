@@ -9,15 +9,16 @@ import pygame
 from tetro import Tetromino, TetrominoProxy
 from display import *
 
+FALL_SPEED_CANDIDATE = [0.6, 0.3, 0.1]
 
 class Gameboard(object):
-    def __init__(self, column, row, tetro_proxy):
+    def __init__(self, column, row, tetro_proxy, diff):
         self.column = column
         self.row = row
         self.tetro_proxy : TetrominoProxy = tetro_proxy
         self.clock = pygame.time.Clock()
         
-        self.fall_speed = 0.3
+        self.fall_speed = FALL_SPEED_CANDIDATE[diff]
 
         self.grid = None
         self.occupied_positions = None
