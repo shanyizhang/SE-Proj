@@ -6,6 +6,8 @@
 
 
 import sqlite3
+import tkinter
+from tkinter import ttk
 
 
 class Leaderboard(object):
@@ -27,3 +29,27 @@ class Leaderboard(object):
     def show_all(self):
         rows = self.cursor.execute("SELECT name, score FROM leaderboard").fetchall()
         print(rows)
+    
+    def show_GUI(self, table=None):
+        """
+        a GUI of LeaderBoard, powered by Tkinter
+        the 'table' parameter is used for inputing dummy data
+        """
+        if table is None:
+            # query the sorted data from Database
+            query = "SELECT name, score FROM leaderboard ORDER BY score DESC"
+            table = self.cursor.execute(query).fetchall()
+        board = tkinter.Tk()
+        board.title("Leader Board")
+        tree = ttk.Treeview(board)  # a table
+        tree["columns"] = ("Player", "Score")  # setup the columns
+        tree.column("Player", width=100)
+        tree.column("Score", width=100)
+        tree.heading("Player", text="Player")
+        tree.heading("Score", text="Score")
+        num = len(table)
+        for i in range(num):
+            # insert a row of data:
+            tree.insert("", i, values=table[i], text="No. %d" % (i + 1))
+        tree.pack()
+        board.mainloop()
