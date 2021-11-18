@@ -55,7 +55,6 @@ if __name__ == '__main__':
             score = main(interface=UI, diff=diff)
 
             LB.ingest(name, score)
-            #LB.show_all()
-            LB.show_GUI()
+            LB.show_all()
 
     pygame.quit()
