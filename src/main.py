@@ -56,5 +56,7 @@ if __name__ == '__main__':
 
             LB.ingest(name, score)
             LB.show_all()
+            data = LB.get_sorted()  # query from database
+            UI.draw_leader_board(data)  # front-end display of LB
 
     pygame.quit()
