@@ -27,3 +27,9 @@ class Leaderboard(object):
     def show_all(self):
         rows = self.cursor.execute("SELECT name, score FROM leaderboard").fetchall()
         print(rows)
+    
+    def get_sorted(self):
+        """ return a list of data sorted by score """
+        query_str = "SELECT name, score FROM leaderboard ORDER BY score DESC"
+        rows = self.cursor.execute(query_str).fetchall()
+        return rows

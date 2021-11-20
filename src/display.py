@@ -19,7 +19,7 @@ class UserInterface(object):
 
     def start(self):
         self.window.fill((0,0,0))
-        self.draw_text_middle('Enter Game Settings to Begin.', 60, (255, 255, 255))
+        self.draw_text_middle('Enter Game Settings to Begin.', 40, (255, 255, 255))  # make it smaller
         self.inputbox.update_inputbox()
         self.checkbox.update_checkbox_array()
         self.update()
@@ -66,6 +66,32 @@ class UserInterface(object):
                 if column == '0':
                     pygame.draw.rect(self.window, shape.color, (sx + j * BLOCK_SIZE, sy + i * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE), 0)
         self.window.blit(label, (sx + 10, sy - BLOCK_SIZE))
+    
+    def draw_text_upper(self, text, size, color, loc):
+        """ draw a line of text, location is specified by the caller """
+        font = pygame.font.SysFont('comicsans', size, bold=True)
+        label = font.render(text, 1, color)
+        self.window.blit(label,
+            (TOP_LEFT_X + BOARD_WIDTH/2 - (label.get_width() / 2), loc))
+
+    def draw_leader_board(self, rows):
+        """ display the leader_board """
+        # flush the current window
+        self.window.fill((0, 0, 0))  # fill with black
+        self.draw_text_upper("Leader Board", 60, (255, 255, 255), 30)  # Title
+        # display each record in a line
+        l = len(rows)
+        for i in range(l):
+            row_str = "No.%d    %s    %s" % (i + 1, rows[i][0], rows[i][1])
+            self.draw_text_upper(row_str, 30, (255, 255, 255), 130 + 100 * i)
+        self.update()
+        # press any key to quit
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                if event.type == pygame.KEYDOWN:
+                    return None
 
 
 class InputBox(object):
