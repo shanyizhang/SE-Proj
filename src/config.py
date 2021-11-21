@@ -33,4 +33,10 @@ TOP_LEFT_X = (WINDOW_WIDTH - BOARD_WIDTH) // 2
 TOP_LEFT_Y = WINDOW_HEIGHT - BOARD_HEIGHT
 
 
+NUM_TETRO = 7
+
+ML = True
+
+CKPT = "./checkpoint"
+
 #SHOW_WINDOW = True  # switch to False to hide window display
