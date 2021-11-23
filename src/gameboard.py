@@ -8,6 +8,13 @@
 import pygame
 from tetro import Tetromino, TetrominoProxy
 from display import *
+import numpy as np
+from model import Model
+import torch
+import os
+import random
+from config import *
+
 
 FALL_SPEED_CANDIDATE = [0.6, 0.3, 0.1]
 
@@ -25,6 +32,7 @@ class Gameboard(object):
         self.curr_tetro : Tetromino = None
         self.fall_time = None
         self.score = None
+        self.model = None
 
     def update_grid(self):
         grid = [[(0,0,0) for x in range(self.column)] for x in range(self.row)]
@@ -104,6 +112,11 @@ class Gameboard(object):
         self.curr_tetro = self.tetro_proxy.dump_next()
         self.fall_time = 0
         self.score = 0
+        if ML:
+            self.model = Model(num_class=NUM_TETRO)
+            if os.path.exists(CKPT):
+                self.model.load_state_dict(torch.load(CKPT)) 
+            self.model.train()
 
     def handle(self, kevent):
         """ 
@@ -134,10 +147,27 @@ class Gameboard(object):
             if not self.valid_space():
                 self.curr_tetro.up()
 
+    def boolean_grid(self):
+        bool_grid = list()
+        for i in range(len(self.grid)):
+            line = self.grid[i]
+            bool_line = [(0, 0, 0) != _ for _ in line]
+            bool_grid.append(bool_line)
+        bool_grid = 1.0 * np.array(bool_grid)
+        bool_grid = np.expand_dims(bool_grid, axis=(0,1))
+        bool_grid = torch.from_numpy(bool_grid) # (1, 1, 20, 10) 
+        bool_grid = bool_grid.to(torch.float32)
+        return bool_grid
+
     def play(self, interface: UserInterface):
         
         self.reset()
 
+        if ML:
+            optimizer = torch.optim.SGD(self.model.parameters(), lr=0.001)
+            criterion = torch.nn.MSELoss()
+
+        first = True
         run = True
         while run:
 
@@ -167,11 +197,32 @@ class Gameboard(object):
                 for pos in shape_pos:
                     p = (pos[0], pos[1])
                     self.occupied_positions[p] = self.curr_tetro.color
-                self.curr_tetro = self.tetro_proxy.dump_next()
                 # update score when rows are eliminated:
                 cleared = self.eliminate_row()
                 if cleared > 0:
                     self.score += self.compute_score(cleared)
+
+                if ML: # activate machine learning 
+                    if cleared > 0:
+                        if not first:
+                            gt = torch.full((NUM_TETRO,), 1/(NUM_TETRO-1))
+                            gt[tetris_index] = 0
+                            optimizer.zero_grad()
+                            loss = criterion(out, gt)
+                            loss.backward()
+                            optimizer.step()
+                            # torch.save(self.model.state_dict(), CKPT)
+                            print("Training...")
+                        first = False
+                    self.grid = self.update_grid()
+                    out = self.model(self.boolean_grid()) # predict index
+                    tetris_index = int(torch.argmax(out))
+                    if random.random() < 0.7:
+                        self.curr_tetro = self.tetro_proxy.dump_next(index_next=tetris_index) # Exploitation
+                    else:
+                        self.curr_tetro = self.tetro_proxy.dump_next() # Exploration
+                else:
+                    self.curr_tetro = self.tetro_proxy.dump_next()
 
             interface.draw_window(self.grid)
             interface.draw_next_shape(self.tetro_proxy.view_next())

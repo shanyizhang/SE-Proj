@@ -158,13 +158,16 @@ class Tetromino(object):
 class TetrominoProxy(object):
     def __init__(self, column):
         self.column = column
-        self.tetromino_array = [self.generate(), self.generate()]
+        self.tetromino_array = [self.generate()]
 
-    def generate(self):
-        return Tetromino(x=self.column/2, y=0, t_index=random.randint(0, len(SHAPES)-1))
+    def generate(self, index=None):
+        if index is None:
+            return Tetromino(x=self.column/2, y=0, t_index=random.randint(0, len(SHAPES)-1))
+        else:
+            return Tetromino(x=self.column/2, y=0, t_index=index)
 
-    def dump_next(self):
-        self.tetromino_array.append(self.generate())
+    def dump_next(self, index_next=None):
+        self.tetromino_array.append(self.generate(index=index_next))
         return self.tetromino_array.pop(0)
         
     def view_next(self):
