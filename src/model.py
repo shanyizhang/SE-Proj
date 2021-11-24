@@ -26,12 +26,4 @@ class Model(nn.Module):
         y = y.flatten()
         y = self.layer4(y)
         return F.softmax(y, dim=0)
-    
-if __name__ == '__main__': 
-    model = Model(num_class=NUM_TETRO)
-    input = torch.rand(size=(1, 1, 20, 10))
-    print("Input Size:", input.shape)
-    with torch.no_grad():
-        out = model(input) 
-        print("Output Size:", out.shape)
-        print(out)
+        
