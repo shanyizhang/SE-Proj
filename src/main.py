@@ -16,6 +16,7 @@ import time
 
 def main(interface: UserInterface, diff):
 
+    """ Main function: Put all ingredients all together """
     TP = TetrominoProxy(column=COLUMN)
     GB = Gameboard(column=COLUMN, row=ROW, tetro_proxy=TP, diff=diff)
     score = GB.play(interface)
@@ -33,6 +34,7 @@ if __name__ == '__main__':
 
     while run:
 
+        """ Run the game until the user quit manually """
         UI.start()
 
         for event in pygame.event.get():
@@ -51,7 +53,8 @@ if __name__ == '__main__':
             
             name = UI.inputbox.dump_and_flush()
             diff = UI.checkbox.dump_and_flush()
-            #UI.inputbox.update_display_text()  # dump InputBox display
+            
+            """ Main Game """
             score = main(interface=UI, diff=diff)
 
             LB.ingest(name, score)
