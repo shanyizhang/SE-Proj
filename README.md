@@ -10,7 +10,7 @@ Courant Institute of Mathematical Sciences | New York University
 
 The project is the Python implementation of Tetris Game based on Pygame framework. 
 
-<img src="/Users/kenzhang/Desktop/SE/Proj/SE-Proj/figure.png" alt="figure" style="zoom:33%;" />
+<img src="./figure.png" alt="figure" style="zoom:33%;" />
 
 #### Run the Program
 
