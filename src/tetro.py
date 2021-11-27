@@ -123,6 +123,11 @@ class TetroState(Enum):
 
 class Tetromino(object):
     def __init__(self, x: int, y: int, t_index: int):
+        """
+        Init the Tetromino
+        Input: Coordinates and index
+        Output: None
+        """
         self.x = x
         self.y = y
         self.shape = SHAPES[t_index]
@@ -131,50 +136,71 @@ class Tetromino(object):
         self.state = TetroState.Alive
 
     def down(self):
+        """ Move Downward """
         self.y += 1
     
     def up(self):
+        """ Move Upward """
         self.y -= 1
 
     def left(self):
+        """ Move Left """
         self.x -= 1
 
     def right(self):
+        """ Move Right """
         self.x += 1
 
     def rotate_clockwise(self):
+        """ Rotate Clockwise """
         self.rotation = (self.rotation + 1) % len(self.shape)
 
     def rotate_counterclockwise(self):
+        """ Rotate CounterClockwise """
         self.rotation = (self.rotation - 1) % len(self.shape)
 
     def die(self):
+        """ Tetromino hits the bottom """
         self.state = TetroState.Dead
     
     def check_die(self):
+        """ Check if the Tetromino dies """
         return self.state == TetroState.Dead
 
 
 class TetrominoProxy(object):
     def __init__(self, column):
+        """
+        Init the TetrominoProxy
+        Input: Number of columns
+        Output: None
+        """
         self.column = column
         self.tetromino_array = [self.generate()]
 
     def generate(self, index=None):
+        """ Generate a new Tetromino """
         if index is None:
             return Tetromino(x=self.column/2, y=0, t_index=random.randint(0, len(SHAPES)-1))
         else:
             return Tetromino(x=self.column/2, y=0, t_index=index)
 
     def dump_next(self, index_next=None):
+        """ Output the Tetromino in the buffer """
         self.tetromino_array.append(self.generate(index=index_next))
         return self.tetromino_array.pop(0)
         
     def view_next(self):
+        """ Take a glance at the next Tetromino """
         return self.tetromino_array[0]
 
     @staticmethod
     def convert_shape_format(shape):
+        """
+        Convert the shape representation of the Tetromino
+        Input: Input shape
+        Output: Converted shape
+        """
         positions = []
         format = shape.shape[shape.rotation % len(shape.shape)]
         for i, line in enumerate(format):

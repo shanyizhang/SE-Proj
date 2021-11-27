@@ -4,7 +4,9 @@
 ##   Ken S. Zhang & Qingyang Li
 ## ----------------------------------------
 
-
+"""
+Global Parameters & Configuration
+"""
 
 ROW = 20
 

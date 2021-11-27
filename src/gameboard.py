@@ -20,6 +20,11 @@ FALL_SPEED_CANDIDATE = [0.6, 0.3, 0.1]
 
 class Gameboard(object):
     def __init__(self, column, row, tetro_proxy, diff):
+        """
+        Init the Gameboard
+        Input: number of columns and rows, tetro proxy and difficulty level 
+        Output: None
+        """
         self.column = column
         self.row = row
         self.tetro_proxy : TetrominoProxy = tetro_proxy
@@ -35,6 +40,11 @@ class Gameboard(object):
         self.model = None
 
     def update_grid(self):
+        """
+        Update the grid given the current situation
+        Input: None
+        Output: Grid representation
+        """
         grid = [[(0,0,0) for x in range(self.column)] for x in range(self.row)]
         for i in range(len(grid)):
             for j in range(len(grid[i])):
@@ -44,6 +54,11 @@ class Gameboard(object):
         return grid        
 
     def valid_space(self):
+        """
+        Check the movement of the tetromino is valid or not
+        Input: None
+        Output: Boolean indicating if it is valid 
+        """
         accepted_positions = [[(j, i) for j in range(self.column) if self.grid[i][j] == (0,0,0)] for i in range(self.row)]
         accepted_positions = [j for sub in accepted_positions for j in sub]
         formatted = self.tetro_proxy.convert_shape_format(self.curr_tetro)
@@ -56,8 +71,9 @@ class Gameboard(object):
     @staticmethod
     def compute_score(num_inc):
         """
-        compute the score when rows are cleared
-        num_inc: number of rows being cleared (between 1 to 4)
+        Compute the score when rows are cleared
+        Input: number of rows being cleared (between 1 to 4)
+        Output: Score
         """
         if num_inc == 1:
             return 10
@@ -71,6 +87,11 @@ class Gameboard(object):
             raise ValueError(num_inc)
 
     def eliminate_row(self):
+        """
+        Eliminate rows that are full when the tetromino hits the bottom
+        Input: None
+        Output: Number of rows eliminated
+        """
         inc = 0
         for i in range(len(self.grid)-1,-1,-1):
             row = self.grid[i]
@@ -91,6 +112,7 @@ class Gameboard(object):
         return inc  # return number of rows eliminated
 
     def fail(self):
+        """ Check if the user fail the game """
         for pos in self.occupied_positions:
             _, y = pos
             if y < 1:
@@ -98,6 +120,11 @@ class Gameboard(object):
         return False
 
     def move_downwards(self):
+        """ 
+        The tetromino moves downward after each timestamp
+        Input: None
+        Output: None
+        """
         self.fall_time += self.clock.get_rawtime()
         if self.fall_time/1000 >= self.fall_speed:
             self.fall_time = 0
@@ -107,6 +134,11 @@ class Gameboard(object):
                 self.curr_tetro.die()
 
     def reset(self, tetro_init=None):
+        """ 
+        Reset the state of the gameboard after each play
+        Input: None
+        Output: None
+        """
         self.occupied_positions = dict()
         self.grid = self.update_grid()
         self.curr_tetro = self.tetro_proxy.dump_next(index_next=tetro_init)  # modified
@@ -119,9 +151,10 @@ class Gameboard(object):
             self.model.train()
 
     def handle(self, kevent):
-        """ 
-        a function to handle keyboard event
-        kevent: a PyGame event object
+        """
+        Handle events
+        Input: event object captured by pygame framework
+        Output: None
         """
         if kevent.type != pygame.KEYDOWN:
             # illegal event
@@ -148,6 +181,11 @@ class Gameboard(object):
                 self.curr_tetro.up()
 
     def boolean_grid(self):
+        """
+        Convert the grid to boolean for learner
+        Input: None
+        Output: Grid in the format of array of booleans
+        """
         bool_grid = list()
         for i in range(len(self.grid)):
             line = self.grid[i]
@@ -160,6 +198,11 @@ class Gameboard(object):
         return bool_grid
 
     def play(self, interface: UserInterface):
+        """
+        The main workflow of the game
+        Input: the interface handle
+        Output: the score achieved in this game
+        """        
         
         self.reset()
 
