@@ -7,6 +7,7 @@
 
 import unittest
 import time
+from gameboard import Gameboard
 import pygame
 from config import *
 from display import *
@@ -108,9 +109,134 @@ class TestTetromino(unittest.TestCase):
         tetro.rotate_clockwise()
         tetro.rotate_clockwise()
         self.assertTrue(tetro.x == COLUMN/2)
-        self.assertTrue(tetro.y == 0)      
-        self.assertTrue(tetro.rotation == 0) 
-        
+        self.assertTrue(tetro.y == 0)
+        self.assertTrue(tetro.rotation == 0)
+
+
+class TestGameBoard(unittest.TestCase):
+    """ Unit Test for class Gameboard """
+
+    def setUp(self) -> None:
+        self.tp = TetrominoProxy(COLUMN)
+        self.gb = Gameboard(COLUMN, ROW, self.tp, 2)
+        self.ui = UserInterface(show_window=True)
+
+    def tearDown(self) -> None:
+        self.tp = None
+        self.gb = None
+
+    def test_play_noop(self):
+        """ test the play() method without user operations """
+        print("# Start playing ...")
+        _score = self.gb.play(self.ui)  # run the play() method
+        self.assertEqual(_score, 0)  # no score gained
+
+    def test_reset(self):
+        """ test the reset() method """
+        self.gb.reset()
+        self.assertEqual(self.gb.score, 0)  # initial score is 0
+        self.assertEqual(self.gb.fall_time, 0)  # fall time is 0
+        self.assertEqual(self.gb.occupied_positions, {})  # no grid is occupied
+        self.assertIsInstance(self.gb.curr_tetro, Tetromino)  # initial Tetromino randomly picked
+
+    def test_update_grid(self):
+        """ test the update_grid() method """
+        self.gb.reset()  # reset Gameboard
+        # choose a grid to occupy
+        position = (2, 4)
+        color = (255, 0, 0)
+        self.gb.occupied_positions = {position:color}
+        grids = self.gb.update_grid()
+        self.assertEqual(grids[position[1]][position[0]], color)
+        # front-end display
+        self.ui.draw_window(grids)
+        self.ui.update()
+        time.sleep(3)
+
+    def test_eliminate_row(self):
+        """ test the eliminate_row() method """
+        self.gb.reset()
+        line = 16
+        for i in range(self.gb.column):
+            self.gb.occupied_positions[(i, line)] = (0, 255, 0)
+        self.gb.occupied_positions[(2, 4)] = (255, 0, 0)
+        # before elimination
+        self.gb.grid = self.gb.update_grid()
+        self.ui.draw_window(self.gb.grid)
+        self.ui.update()
+        time.sleep(4)
+        # after elimination
+        num = self.gb.eliminate_row()  # call the method
+        self.assertEqual(num, 1)
+        self.gb.grid = self.gb.update_grid()
+        self.ui.draw_window(self.gb.grid)
+        self.ui.update()
+        time.sleep(4)
+
+    def test_not_fail(self):
+        """ fail() method, should return False """
+        self.gb.reset()
+        positions = [(2, 1), (1, 1), (2, 7)]
+        color = (0, 0, 255)
+        for pos in positions:
+            self.gb.occupied_positions[pos] = color
+        grids = self.gb.update_grid()
+        self.assertFalse(self.gb.fail())
+        #self.ui.draw_window(grids)
+        #self.ui.update()
+        #time.sleep(4)
+
+    def test_fail(self):
+        """ fail() method, should return True """
+        self.gb.reset()
+        positions = [(2, 1), (1, 1), (2, 7), (2, 0), (9, 0)]
+        color = (0, 0, 255)
+        for pos in positions:
+            self.gb.occupied_positions[pos] = color
+        grids = self.gb.update_grid()
+        self.assertTrue(self.gb.fail())
+        #self.ui.draw_window(grids)
+        #self.ui.update()
+        #time.sleep(4)
+
+    def test_move_downwards(self):
+        """
+        test the move_downwards() method
+        (the happy path)
+        """
+        self.gb.reset(tetro_init=0)
+        self.gb.clock.tick()
+        time.sleep(2)  # wait for some time
+        self.gb.clock.tick()
+        self.gb.move_downwards()  # should move one grid down
+        grids = self.gb.update_grid()
+        # check if the current Tetromino is alive
+        self.assertFalse(self.gb.curr_tetro.check_die())
+        # check its position
+        self.assertEqual(self.gb.curr_tetro.y, 1)
+        #self.ui.draw_window(grids)
+        #self.ui.update()
+        #time.sleep(4)
+
+    def test_boolean_grid(self):
+        """ test the boolean_grid() method """
+        self.gb.reset()
+        positions = [(2, 1), (1, 1), (2, 7)]
+        color = (0, 0, 255)
+        for pos in positions:
+            self.gb.occupied_positions[pos] = color
+        self.gb.grid = self.gb.update_grid()
+        b_grids = self.gb.boolean_grid()
+        positions_2 = [(5, 3), (1, 4), (2, 8)]
+        for pos in positions:
+            # occupied positions
+            val = b_grids[0][0][pos[1]][pos[0]]
+            self.assertAlmostEqual(float(val), 1.0)
+        for pos in positions_2:
+            # vacant positions
+            val = b_grids[0][0][pos[1]][pos[0]]
+            self.assertAlmostEqual(float(val), 0.0)
+
 
 if __name__ == '__main__':
     unittest.main()

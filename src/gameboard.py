@@ -133,7 +133,7 @@ class Gameboard(object):
                 self.curr_tetro.up()
                 self.curr_tetro.die()
 
-    def reset(self):
+    def reset(self, tetro_init=None):
         """ 
         Reset the state of the gameboard after each play
         Input: None
@@ -141,13 +141,13 @@ class Gameboard(object):
         """
         self.occupied_positions = dict()
         self.grid = self.update_grid()
-        self.curr_tetro = self.tetro_proxy.dump_next()
+        self.curr_tetro = self.tetro_proxy.dump_next(index_next=tetro_init)  # modified
         self.fall_time = 0
         self.score = 0
         if ML:
             self.model = Model(num_class=NUM_TETRO)
             if os.path.exists(CKPT):
-                self.model.load_state_dict(torch.load(CKPT)) 
+                self.model.load_state_dict(torch.load(CKPT))
             self.model.train()
 
     def handle(self, kevent):
