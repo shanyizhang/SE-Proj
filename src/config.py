@@ -38,5 +38,3 @@ NUM_TETRO = 7
 ML = True
 
 CKPT = "./checkpoint"
-
-#SHOW_WINDOW = True  # switch to False to hide window display
