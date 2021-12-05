@@ -12,9 +12,10 @@ import pygame
 from config import *
 from display import *
 from database import *
-from model import Model
+from model import CNNModel, DeterministicModel
 from tetro import *
 import torch
+import numpy as np
 
 
 class TestDisplay(unittest.TestCase):
@@ -75,11 +76,29 @@ class TestModel(unittest.TestCase):
 
     def test_cnn_model(self):
         """ test CNN model """
-        self.model = Model(num_class=NUM_TETRO)
+        self.model = CNNModel(num_class=NUM_TETRO)
         input = torch.rand(size=(1, 1, 20, 10))
         with torch.no_grad():
             out = self.model(input) 
             self.assertTrue(out.shape == torch.Size([NUM_TETRO]))
+
+    def test_deterministic_model(self):
+        """ test Deterministic model """
+        self.model = DeterministicModel(num_class=7)
+        x = [[0., 0., 0., 0., 0., 0., 0., 1., 0., 0.],
+            [0., 0., 1., 0., 0., 0., 1., 1., 0., 0.],
+            [0., 0., 1., 1., 0., 1., 1., 1., 0., 0.],
+            [1., 1., 1., 1., 1., 1., 1., 1., 0., 0.]]
+        x = np.array(x)
+        exclude = self.model.predict(x, crop=False)
+        self.assertTrue(np.all(exclude == [2,3,6]))
+        x = [[0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+            [1., 1., 1., 0., 0., 0., 1., 0., 0., 0.],
+            [0., 0., 1., 1., 1., 1., 1., 0., 0., 0.],
+            [1., 1., 1., 1., 1., 1., 1., 0., 0., 0.]]
+        x = np.array(x)
+        exclude = self.model.predict(x, crop=False)
+        self.assertTrue(np.all(exclude == [2,4,5]))
 
 
 class TestTetromino(unittest.TestCase):
@@ -226,7 +245,7 @@ class TestGameBoard(unittest.TestCase):
         for pos in positions:
             self.gb.occupied_positions[pos] = color
         self.gb.grid = self.gb.update_grid()
-        b_grids = self.gb.boolean_grid()
+        b_grids = self.gb.boolean_grid(torch_flag=True)
         positions_2 = [(5, 3), (1, 4), (2, 8)]
         for pos in positions:
             # occupied positions

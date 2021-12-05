@@ -178,16 +178,24 @@ class TetrominoProxy(object):
         self.column = column
         self.tetromino_array = [self.generate()]
 
-    def generate(self, index=None):
+    def generate(self, index=None, blacklist=None):
         """ Generate a new Tetromino """
-        if index is None:
+        if index is None and blacklist is None:
             return Tetromino(x=self.column/2, y=0, t_index=random.randint(0, len(SHAPES)-1))
-        else:
+        if index is not None:
             return Tetromino(x=self.column/2, y=0, t_index=index)
+        if blacklist is not None:
+            if len(blacklist) < len(SHAPES):
+                while True:
+                    index = random.randint(0, len(SHAPES)-1)
+                    if index not in blacklist:
+                        return Tetromino(x=self.column/2, y=0, t_index=index)
+            else:
+                return Tetromino(x=self.column/2, y=0, t_index=random.randint(0, len(SHAPES)-1))
 
-    def dump_next(self, index_next=None):
+    def dump_next(self, index_next=None, blacklist_next=None):
         """ Output the Tetromino in the buffer """
-        self.tetromino_array.append(self.generate(index=index_next))
+        self.tetromino_array.append(self.generate(index=index_next, blacklist=blacklist_next))
         return self.tetromino_array.pop(0)
         
     def view_next(self):
