@@ -119,6 +119,7 @@ class UserInterface(object):
         # flush the current window
         self.window.fill((0, 0, 0))  # fill with black
         self.draw_text_upper("Leader Board", 60, (255, 255, 255), 30)  # Title
+        self.draw_text_upper("Press any key to exit.", 15, (255, 255, 255), 600)  # comment
         # display each record in a line
         l = len(rows)
         for i in range(l):

@@ -64,6 +64,26 @@ class TestDisplay(unittest.TestCase):
         self.ui.draw_leader_board(dummy_lb.get_sorted())
         self.assertTrue(True)
 
+    def test_checkbox(self):
+        """ test the CheckBoxArray """
+        self.ui = UserInterface(show_window=False)
+        self.ui.start()
+        cba = self.ui.checkbox
+        self.assertFalse(cba.check_complete())  # nothing checked at the beginning
+        cba.checkbox_array[1].checked = True  # check the one for "Medium"
+        self.assertTrue(cba.check_complete())  # should be complete
+
+    def test_inputbox(self):
+        """ test the InputBox """
+        name = "Bruce"
+        self.ui = UserInterface(show_window=False)
+        self.ui.start()
+        self.assertFalse(self.ui.inputbox.check_complete())  # nothing inside
+        self.ui.inputbox.text = name  # fill in the name
+        player = self.ui.inputbox.dump_and_flush()
+        self.assertEqual(name, player)
+        self.assertFalse(self.ui.inputbox.check_complete())  # flushed
+
 
 class TestModel(unittest.TestCase):
     """ Unit Test for class Model """
