@@ -37,6 +37,6 @@ TOP_LEFT_Y = WINDOW_HEIGHT - BOARD_HEIGHT
 
 NUM_TETRO = 7
 
-ML = True
+ML = False
 
 CKPT = "./checkpoint"

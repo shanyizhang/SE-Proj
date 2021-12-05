@@ -9,7 +9,7 @@ import pygame
 from tetro import Tetromino, TetrominoProxy
 from display import *
 import numpy as np
-from model import Model
+from model import CNNModel, DeterministicModel
 import torch
 import os
 import random
@@ -17,6 +17,7 @@ from config import *
 
 
 FALL_SPEED_CANDIDATE = [0.6, 0.3, 0.1]
+EXPLORE_EXPLOIT_TRADEOFF_CANDIDATE = [0.3, 0.6, 0.9]
 
 class Gameboard(object):
     def __init__(self, column, row, tetro_proxy, diff):
@@ -31,6 +32,7 @@ class Gameboard(object):
         self.clock = pygame.time.Clock()
         
         self.fall_speed = FALL_SPEED_CANDIDATE[diff]
+        self.explore_exploit_tradeoff = EXPLORE_EXPLOIT_TRADEOFF_CANDIDATE[diff]
 
         self.grid = None
         self.occupied_positions = None
@@ -145,10 +147,12 @@ class Gameboard(object):
         self.fall_time = 0
         self.score = 0
         if ML:
-            self.model = Model(num_class=NUM_TETRO)
+            self.model = CNNModel(num_class=NUM_TETRO)
             if os.path.exists(CKPT):
                 self.model.load_state_dict(torch.load(CKPT))
             self.model.train()
+        else:
+            self.model = DeterministicModel(num_class=NUM_TETRO)
 
     def handle(self, kevent):
         """
@@ -180,10 +184,10 @@ class Gameboard(object):
             if not self.valid_space():
                 self.curr_tetro.up()
 
-    def boolean_grid(self):
+    def boolean_grid(self, torch_flag):
         """
         Convert the grid to boolean for learner
-        Input: None
+        Input: torch_flag indicating if output torch.tensor or numpy.array
         Output: Grid in the format of array of booleans
         """
         bool_grid = list()
@@ -192,9 +196,10 @@ class Gameboard(object):
             bool_line = [(0, 0, 0) != _ for _ in line]
             bool_grid.append(bool_line)
         bool_grid = 1.0 * np.array(bool_grid)
-        bool_grid = np.expand_dims(bool_grid, axis=(0,1))
-        bool_grid = torch.from_numpy(bool_grid) # (1, 1, 20, 10) 
-        bool_grid = bool_grid.to(torch.float32)
+        if torch_flag:
+            bool_grid = np.expand_dims(bool_grid, axis=(0,1))
+            bool_grid = torch.from_numpy(bool_grid) # (1, 1, 20, 10) 
+            bool_grid = bool_grid.to(torch.float32)
         return bool_grid
 
     def play(self, interface: UserInterface):
@@ -258,14 +263,18 @@ class Gameboard(object):
                             print("Training...")
                         first = False
                     self.grid = self.update_grid()
-                    out = self.model(self.boolean_grid()) # predict index
+                    out = self.model(self.boolean_grid(torch_flag=True)) # predict index
                     tetris_index = int(torch.argmax(out))
-                    if random.random() < 0.7:
+                    if random.random() < self.explore_exploit_tradeoff:
                         self.curr_tetro = self.tetro_proxy.dump_next(index_next=tetris_index) # Exploitation
                     else:
                         self.curr_tetro = self.tetro_proxy.dump_next() # Exploration
                 else:
-                    self.curr_tetro = self.tetro_proxy.dump_next()
+                    if random.random() < self.explore_exploit_tradeoff:
+                        tetris_exclude = self.model.predict(self.boolean_grid(torch_flag=False)) # Exploitation
+                        self.curr_tetro = self.tetro_proxy.dump_next(blacklist_next=tetris_exclude)
+                    else:
+                        self.curr_tetro = self.tetro_proxy.dump_next() # Exploration
 
             interface.draw_window(self.grid)
             interface.draw_next_shape(self.tetro_proxy.view_next())
