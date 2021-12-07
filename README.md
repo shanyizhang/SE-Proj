@@ -4,6 +4,10 @@ Course Project | CSCI-GA-2440 Software Engineering | Fall 2021
 
 Courant Institute of Mathematical Sciences | New York University
 
+Documentation: https://docs.google.com/document/d/1-1xNH0bmrjxnifx4WyyrgfNdHtdhdjCVrBUduBSd2c4/edit?usp=sharing
+
+Presentation: https://docs.google.com/presentation/d/1cUc7rVYUCeYX0JkY5NLp_TrQXChufneeVTT-5XAaMVE/edit?usp=sharing
+
 
 
 ## Introduction
@@ -42,4 +46,3 @@ Qingyang LI (ql2048@nyu.edu)
 - **Pygame**
 
 See  `requirements.txt` for details.
-
